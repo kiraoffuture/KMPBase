@@ -1,0 +1,24 @@
+<resources>
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_settings">Cài đặt</string>
+
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Mật khẩu</string>
+    <string name="auth_sign_in">Đăng nhập</string>
+
+    <string name="home_contacts_title">Danh bạ</string>
+    <string name="home_no_contacts">Không có liên hệ nào</string>
+
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_logout">Đăng xuất</string>
+
+    <string name="action_retry">Thử lại</string>
+
+    <string name="error_email_required">Vui lòng nhập email</string>
+    <string name="error_invalid_email">Email không hợp lệ</string>
+    <string name="error_password_min_length">Mật khẩu phải có ít nhất %1$d ký tự</string>
+    <string name="error_database">Lỗi cơ sở dữ liệu. Vui lòng thử lại.</string>
+    <string name="error_unknown">Đã xảy ra lỗi không mong muốn.</string>
+    <string name="error_network_generic">Lỗi mạng. Vui lòng thử lại.</string>
+    <string name="error_network_unreachable">Không thể kết nối máy chủ API. Kiểm tra SERVER_URL trong .env và build lại ứng dụng.</string>
+</resources>

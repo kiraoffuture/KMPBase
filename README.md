@@ -1,35 +1,94 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM).
+# KMPBase
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+Kotlin Multiplatform base project with **Clean Architecture** and modular feature slices.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## Modules
 
-### Running the apps
+```
+androidApp / desktopApp / iosApp   # platform shells
+composeApp                         # app entry, navigation, SessionViewModel
+core:domain                        # entities, repository contracts, use cases
+core:model                         # network DTOs (@Serializable)
+core:common                        # dispatchers, network config
+core:network                       # Ktor client, API services
+core:database                      # Room KMP cache (BundledSQLiteDriver)
+core:data                          # repository implementations, mappers
+core:ui                            # theme, shared UI components
+core:navigation                    # destinations
+core:di                            # Koin modules (data + domain wiring)
+feature:auth                       # login flow
+feature:home                       # home tab (contact list)
+feature:settings                   # settings tab (logout)
+```
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+## Clean Architecture layers
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- Desktop app:
-  - Hot reload: `./gradlew :desktopApp:hotRun --auto`
-  - Standard run: `./gradlew :desktopApp:run`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+```
+Presentation     feature:* + composeApp
+    Screen, ViewModel, UiState
+    depends on → core:domain (use cases only)
 
-### Running tests
+Domain           core:domain
+    Entity, AppResult, repository interface, UseCase
+    depends on → kotlinx.coroutines only
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+Data             core:data
+    RepositoryImpl, mapper (DTO → Entity), local/remote orchestration
+    depends on → core:domain, core:model, core:network, core:database
 
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- Desktop tests: `./gradlew :shared:jvmTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+Infrastructure   core:network, core:database, core:common
+    Ktor, Room, Settings, env config
+```
 
----
+### Data flow example (Home)
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+```
+HomeScreen → HomeViewModel
+  → ObserveContactsUseCase / RefreshContactsUseCase   (domain)
+    → HomeRepository                                  (domain interface)
+      → HomeRepositoryImpl                            (data)
+        → HomeApiService (ContactDto) + CacheDao + mapper
+```
+
+### Dependency rules
+
+- `feature:*` → `core:domain`, `core:ui` (never `core:data`, `core:network`, `core:database`)
+- `core:domain` → no dependency on data/UI/framework
+- `core:data` → implements domain repository interfaces
+- `composeApp` → wires navigation + `appModule` (SessionViewModel); no direct data layer
+- features must not depend on each other
+
+## Run
+
+- Android: `./gradlew :androidApp:assembleDebug`
+- Desktop: `./gradlew :desktopApp:run`
+- iOS: open `iosApp/` in Xcode and run
+
+## Tests
+
+- Common/JVM: `./gradlew :feature:home:jvmTest :core:data:jvmTest`
+- Android host: `./gradlew :core:model:testAndroidHostTest`
+
+## Add a new feature
+
+1. Create `feature/<name>` and apply the `kmp.feature` convention plugin.
+2. Add use case(s) in `core/domain/.../usecase/<name>/`.
+3. Add repository contract in `core/domain/.../repository/` and impl in `core/data/`.
+4. Register use cases in `core/di/.../KoinModules.kt` (`domainModule`).
+5. Add route(s) in `core/navigation/.../AppDestination.kt`.
+6. Create `<Name>ViewModel` calling use cases; register in `feature/<name>/.../<Name>Module.kt`.
+7. Add `implementation(projects.feature.<name>)` to `composeApp/build.gradle.kts`.
+8. Register the route in `composeApp/.../AppNavHost.kt`.
+9. Include the feature module in `settings.gradle.kts`.
+10. Load the feature Koin module from `initApp()` via `initKoin { modules(...) }`.
+
+## Stack
+
+- Compose Multiplatform + Material 3
+- Koin
+- Ktor
+- Room KMP (BundledSQLiteDriver)
+- kotlinx.serialization
+- Navigation Compose (JetBrains AndroidX)
+- multiplatform-settings
+- Kermit

@@ -2,6 +2,7 @@ rootProject.name = "KMPBase"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
@@ -12,6 +13,7 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -25,6 +27,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -34,4 +37,16 @@ plugins {
 
 include(":androidApp")
 include(":desktopApp")
-include(":shared")
+include(":composeApp")
+include(":core:model")
+include(":core:domain")
+include(":core:common")
+include(":core:network")
+include(":core:database")
+include(":core:data")
+include(":core:ui")
+include(":core:navigation")
+include(":core:di")
+include(":feature:home")
+include(":feature:settings")
+include(":feature:auth")
