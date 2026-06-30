@@ -9,15 +9,23 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger as KtorLogger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.LoggingFormat
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
+private val ktorHttpLogger = object : KtorLogger {
+    override fun log(message: String) {
+        Logger.d { "[Http] $message" }
+    }
+}
+
 fun createHttpClient(
     engine: HttpClientEngine,
     authTokenProvider: suspend () -> String = { "" },
+    httpLogLevel: LogLevel = LogLevel.BODY,
 ): HttpClient {
     val authPlugin = createClientPlugin("AuthInterceptor") {
         onRequest { request, _ ->
@@ -43,12 +51,9 @@ fun createHttpClient(
             contentType(ContentType.Application.Json)
         }
         install(Logging) {
-            logger = object : KtorLogger {
-                override fun log(message: String) {
-                    Logger.d("HttpClient") { message }
-                }
-            }
-            level = LogLevel.INFO
+            logger = ktorHttpLogger
+            level = httpLogLevel
+            format = LoggingFormat.OkHttp
         }
     }
 }

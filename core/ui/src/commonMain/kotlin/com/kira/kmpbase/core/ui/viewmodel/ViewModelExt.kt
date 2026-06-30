@@ -12,7 +12,7 @@ fun ViewModel.launchSafely(
         try {
             block()
         } catch (throwable: Throwable) {
-            Logger.e(throwable) { "Unhandled coroutine error in ${this@launchSafely::class.simpleName}" }
+            Logger.e(throwable) { "[Coroutine] Unhandled error in ${this@launchSafely::class.simpleName}" }
         }
     }
 }
