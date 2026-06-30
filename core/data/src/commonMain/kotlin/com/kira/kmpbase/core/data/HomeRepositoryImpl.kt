@@ -11,6 +11,7 @@ import com.kira.kmpbase.core.domain.model.Contact
 import com.kira.kmpbase.core.domain.repository.HomeRepository
 import com.kira.kmpbase.core.model.ContactDto
 import com.kira.kmpbase.core.network.HomeApiService
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -29,6 +30,7 @@ class HomeRepositoryImpl(
 
     override fun observeContacts(): Flow<AppResult<List<Contact>>> = flow {
         emit(AppResult.Loading)
+        delay(CONTACT_LIST_FETCH_DELAY_MS)
 
         var cachedContacts: List<Contact>? = null
         var cacheError: AppResult.Error? = null
@@ -85,5 +87,6 @@ class HomeRepositoryImpl(
 
     companion object {
         private const val CACHE_KEY_CONTACTS = "contacts"
+        private const val CONTACT_LIST_FETCH_DELAY_MS = 5_000L
     }
 }

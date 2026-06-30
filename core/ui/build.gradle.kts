@@ -26,6 +26,7 @@ kotlin {
             implementation(libs.compose.materialIconsExtended)
             implementation(libs.koin.compose)
             implementation(libs.kermit)
+            implementation(libs.compose.placeholder)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

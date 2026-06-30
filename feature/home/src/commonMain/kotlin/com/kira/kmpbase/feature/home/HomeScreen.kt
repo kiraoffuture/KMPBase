@@ -15,9 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kira.kmpbase.core.ui.components.ContactListSkeleton
 import com.kira.kmpbase.core.ui.components.EmptyView
 import com.kira.kmpbase.core.ui.components.ErrorView
-import com.kira.kmpbase.core.ui.components.LoadingView
 import com.kira.kmpbase.core.ui.generated.resources.Res
 import com.kira.kmpbase.core.ui.generated.resources.home_contacts_title
 import com.kira.kmpbase.core.ui.generated.resources.home_no_contacts
@@ -34,7 +34,7 @@ fun HomeScreen(
     val errorMessage = uiState.error?.toLocalizedMessage()
 
     when {
-        uiState.isLoading && uiState.contacts.isEmpty() -> LoadingView(modifier)
+        uiState.isLoading && uiState.contacts.isEmpty() -> ContactListSkeleton(modifier)
         errorMessage != null && uiState.contacts.isEmpty() -> ErrorView(
             message = errorMessage,
             onRetry = viewModel::refresh,
