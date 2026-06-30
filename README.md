@@ -64,7 +64,7 @@ HomeScreen → HomeViewModel
 
 The app supports three environments: **develop**, **staging**, **product**.
 
-1. Copy `.env.example` for each environment and set `SERVER_URL`:
+1. Create env files and set `SERVER_URL` (files are **gitignored** — not committed):
 
 ```bash
 cp .env.example .env.develop
@@ -72,25 +72,29 @@ cp .env.example .env.staging
 cp .env.example .env.product
 ```
 
+Team-shared env templates: [Google Drive (envs)](https://drive.google.com/drive/folders/1snZx6jmEWapsf7mJjdJpj92Ai0CGC9Sf?usp=sharing).
+
+Gradle reads `.env.{appEnv}` first, then falls back to `.env` if missing.
+
 2. Select environment per platform (default: `develop`):
 
 - **Android (Android Studio):** pick an **Android App** run config (`android DevelopDebug`, …) from the run dropdown
-- **Desktop:** `-PappEnv=develop|staging|product`
-- **iOS:** Xcode scheme (`DevelopDebug`, `StagingDebug`, …) passes `-PappEnv` via xcconfig
+- **Desktop:** `-PappEnv=develop|staging|product` (default: `develop`)
+- **iOS:** Xcode scheme `ios DevelopDebug`, … — `APP_ENV` from xcconfig → Gradle `-PappEnv`
 
 | Platform | Develop | Staging | Product |
 |----------|---------|---------|---------|
 | Android | `./gradlew :androidApp:assembleDevelopDebug` | `./gradlew :androidApp:assembleStagingDebug` | `./gradlew :androidApp:assembleProductRelease` |
 | Desktop | `./gradlew :desktopApp:run -PappEnv=develop` | `./gradlew :desktopApp:run -PappEnv=staging` | `./gradlew :desktopApp:run -PappEnv=product` |
-| iOS | `DevelopDebug` | `StagingDebug` | `ProductRelease` |
+| iOS (scheme) | `ios DevelopDebug` | `ios StagingDebug` | `ios ProductRelease` |
 
-Shared Xcode schemes (no generic `Debug` / `Release`):
+Shared Xcode schemes (prefix `ios`, no generic `Debug` / `Release`):
 
-- `DevelopDebug`, `DevelopRelease`
-- `StagingDebug`, `StagingRelease`
-- `ProductDebug`, `ProductRelease`
+- `ios DevelopDebug`, `ios DevelopRelease`
+- `ios StagingDebug`, `ios StagingRelease`
+- `ios ProductDebug`, `ios ProductRelease`
 
-Each scheme uses `APP_ENV` from `iosApp/Configuration/*.xcconfig`.
+Each scheme maps to build configuration `DevelopDebug`, `StagingRelease`, etc. Flavor settings (`APP_ENV`, bundle id) live in `iosApp/Configuration/Develop.xcconfig`, `Staging.xcconfig`, `Product.xcconfig`. Per-configuration wrappers (e.g. `DevelopDebug.xcconfig`) also set `KOTLIN_FRAMEWORK_BUILD_TYPE` (`debug` / `release`) for the Kotlin framework build.
 
 ### Android from Android Studio
 
@@ -124,18 +128,19 @@ After clone: open project → **File → Sync Project with Gradle Files** → co
 
 To save your own config to git: **Run → Edit Configurations →** (your config) → check **Store as project file** → choose `.run/` (recommended) or `.idea/runConfigurations/`.
 
-Each config uses the matching Xcode scheme / build configuration and passes `APP_ENV` via `iosApp/Configuration/*.xcconfig` → Gradle `-PappEnv`.
+Each config uses scheme `ios {Variant}` (e.g. `ios DevelopDebug`) with build configuration `{Variant}` and passes `APP_ENV` via xcconfig → Gradle `-PappEnv`.
 
 ### Quick start
 
 - Android: `./gradlew :androidApp:assembleDevelopDebug`
-- Desktop: `./gradlew :desktopApp:run`
-- iOS: open `iosApp/` in Xcode, or run an **iOS Application** configuration in Android Studio
+- Desktop: `./gradlew :desktopApp:run` (defaults to `develop`)
+- iOS: open `iosApp/` in Xcode and run scheme `ios DevelopDebug`, or use **ios DevelopDebug** in Android Studio
 
 ## Tests
 
-- Common/JVM: `./gradlew :feature:home:jvmTest :core:data:jvmTest`
-- Android host: `./gradlew :core:model:testAndroidHostTest`
+```bash
+./gradlew :feature:home:jvmTest :core:data:jvmTest :core:domain:jvmTest
+```
 
 ## Add a new feature
 
