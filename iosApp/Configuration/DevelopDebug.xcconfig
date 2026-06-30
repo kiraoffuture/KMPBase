@@ -1,0 +1,3 @@
+#include "Develop.xcconfig"
+
+KOTLIN_FRAMEWORK_BUILD_TYPE=debug

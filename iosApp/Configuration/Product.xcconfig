@@ -1,0 +1,7 @@
+#include "Config.xcconfig"
+
+TEAM_ID=
+
+PRODUCT_NAME=KMPBase
+PRODUCT_BUNDLE_IDENTIFIER=com.kira.kmpbase.KMPBase$(TEAM_ID)
+APP_ENV=product

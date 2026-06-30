@@ -1,0 +1,3 @@
+#include "Staging.xcconfig"
+
+KOTLIN_FRAMEWORK_BUILD_TYPE=release

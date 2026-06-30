@@ -60,9 +60,77 @@ HomeScreen → HomeViewModel
 
 ## Run
 
-- Android: `./gradlew :androidApp:assembleDebug`
+### Environments
+
+The app supports three environments: **develop**, **staging**, **product**.
+
+1. Copy `.env.example` for each environment and set `SERVER_URL`:
+
+```bash
+cp .env.example .env.develop
+cp .env.example .env.staging
+cp .env.example .env.product
+```
+
+2. Select environment per platform (default: `develop`):
+
+- **Android (Android Studio):** pick an **Android App** run config (`android DevelopDebug`, …) from the run dropdown
+- **Desktop:** `-PappEnv=develop|staging|product`
+- **iOS:** Xcode scheme (`DevelopDebug`, `StagingDebug`, …) passes `-PappEnv` via xcconfig
+
+| Platform | Develop | Staging | Product |
+|----------|---------|---------|---------|
+| Android | `./gradlew :androidApp:assembleDevelopDebug` | `./gradlew :androidApp:assembleStagingDebug` | `./gradlew :androidApp:assembleProductRelease` |
+| Desktop | `./gradlew :desktopApp:run -PappEnv=develop` | `./gradlew :desktopApp:run -PappEnv=staging` | `./gradlew :desktopApp:run -PappEnv=product` |
+| iOS | `DevelopDebug` | `StagingDebug` | `ProductRelease` |
+
+Shared Xcode schemes (no generic `Debug` / `Release`):
+
+- `DevelopDebug`, `DevelopRelease`
+- `StagingDebug`, `StagingRelease`
+- `ProductDebug`, `ProductRelease`
+
+Each scheme uses `APP_ENV` from `iosApp/Configuration/*.xcconfig`.
+
+### Android from Android Studio
+
+Shared run configurations (type **Android App**) are in **`.idea/runConfigurations/`** and **`.run/`**:
+
+- `android DevelopDebug`, `android DevelopRelease`
+- `android StagingDebug`, `android StagingRelease`
+- `android ProductDebug`, `android ProductRelease`
+
+Each config runs Gradle **before launch** (`install{Variant}` for debug, `run{Variant}` for release) then deploys via **Android App** (debug only).
+
+After clone: **File → Sync Project with Gradle Files**, then pick a config from the run dropdown (`Android App.android DevelopDebug`, …). If missing, **File → Invalidate Caches → Restart**.
+
+For debug configs, also set **Build Variants → androidApp** to the matching variant (e.g. `developDebug`) so deploy matches the installed APK.
+
+Requires a connected device/emulator with `adb` available (via Android SDK).
+
+### iOS from Android Studio
+
+Requires **macOS**, **Xcode**, and a bootable iOS Simulator.
+
+**Why adding a config in AS does not change git:** by default, run configurations are saved to `.idea/workspace.xml` (local, gitignored). They are not written under `.idea/runConfigurations/` unless you enable **Store as project file** in the Run Configuration dialog.
+
+Shared iOS run configurations are in **`.idea/runConfigurations/`** and **`.run/`** (type **Xcode Application** / `AppleRunConfiguration`):
+
+- `ios DevelopDebug`, `ios DevelopRelease`
+- `ios StagingDebug`, `ios StagingRelease`
+- `ios ProductDebug`, `ios ProductRelease`
+
+After clone: open project → **File → Sync Project with Gradle Files** → configs appear in the run dropdown → pick a simulator → Run. If missing, **File → Invalidate Caches → Restart**.
+
+To save your own config to git: **Run → Edit Configurations →** (your config) → check **Store as project file** → choose `.run/` (recommended) or `.idea/runConfigurations/`.
+
+Each config uses the matching Xcode scheme / build configuration and passes `APP_ENV` via `iosApp/Configuration/*.xcconfig` → Gradle `-PappEnv`.
+
+### Quick start
+
+- Android: `./gradlew :androidApp:assembleDevelopDebug`
 - Desktop: `./gradlew :desktopApp:run`
-- iOS: open `iosApp/` in Xcode and run
+- iOS: open `iosApp/` in Xcode, or run an **iOS Application** configuration in Android Studio
 
 ## Tests
 

@@ -6,9 +6,15 @@ xcuserdata
 !src/**/build/
 local.properties
 .env
-.env.*
+.env.develop
+.env.staging
+.env.product
 !.env.example
-.idea
+.idea/*
+!.idea/runConfigurations/
+!.idea/runConfigurations/**
+!.idea/xcode.xml
+# Run configs: .run/ and .idea/runConfigurations/ (shared). Default AS configs live in workspace.xml (local).
 .DS_Store
 captures
 .externalNativeBuild
