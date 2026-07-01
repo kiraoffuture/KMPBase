@@ -27,6 +27,18 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.kermit)
             implementation(libs.compose.placeholder)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
+            implementation(libs.ktor.client.core)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.java)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -18,6 +18,7 @@ gitliveFirebase = "2.4.0"
 googleServices = "4.5.0"
 firebaseCrashlyticsGradle = "3.0.7"
 placeholder = "1.0.3"
+coil = "3.5.0"
 koin = "4.0.0"
 kotlin = "2.3.21"
 kotlinx-coroutines = "1.11.0"
@@ -72,6 +73,8 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", ve
 gitlive-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "gitliveFirebase" }
 gitlive-firebase-crashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "gitliveFirebase" }
 compose-placeholder = { module = "com.revenuecat.purchases:placeholder", version.ref = "placeholder" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-core-viewmodel = { module = "io.insert-koin:koin-core-viewmodel", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }

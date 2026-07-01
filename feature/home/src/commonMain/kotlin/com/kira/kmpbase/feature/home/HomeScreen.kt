@@ -3,6 +3,7 @@ package com.kira.kmpbase.feature.home
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,9 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kira.kmpbase.core.ui.components.ContactAvatar
 import com.kira.kmpbase.core.ui.components.ContactListSkeleton
 import com.kira.kmpbase.core.ui.components.EmptyView
 import com.kira.kmpbase.core.ui.components.ErrorView
@@ -84,9 +87,19 @@ private fun HomeContent(
         ) {
             items(uiState.contacts, key = { it.id }) { contact ->
                 Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(text = contact.name, style = MaterialTheme.typography.titleMedium)
-                        Text(text = contact.phone, style = MaterialTheme.typography.bodyMedium)
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ContactAvatar(
+                            url = contact.avatarUrl,
+                            name = contact.name,
+                        )
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(text = contact.name, style = MaterialTheme.typography.titleMedium)
+                            Text(text = contact.phone, style = MaterialTheme.typography.bodyMedium)
+                        }
                     }
                 }
             }
