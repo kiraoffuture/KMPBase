@@ -4,8 +4,11 @@ import com.kira.kmpbase.core.common.DefaultDispatcherProvider
 import com.kira.kmpbase.core.common.DispatcherProvider
 import com.kira.kmpbase.core.data.AuthRepositoryImpl
 import com.kira.kmpbase.core.data.HomeRepositoryImpl
-import com.kira.kmpbase.core.data.SettingsRepository
-import com.kira.kmpbase.core.data.SettingsRepositoryImpl
+import com.kira.kmpbase.core.data.auth.AuthLocalKeys
+import com.kira.kmpbase.core.data.local.LocalPreferences
+import com.kira.kmpbase.core.data.local.LocalPreferencesImpl
+import com.kira.kmpbase.core.data.local.SecureLocalPreferences
+import com.kira.kmpbase.core.data.local.SecureLocalPreferencesImpl
 import com.kira.kmpbase.core.database.CacheDao
 import com.kira.kmpbase.core.database.DatabaseBuilderFactory
 import com.kira.kmpbase.core.database.createDatabase
@@ -35,7 +38,9 @@ val networkModule = module {
     single {
         createHttpClient(
             engine = get(),
-            authTokenProvider = { get<SettingsRepository>().getAuthToken() },
+            authTokenProvider = {
+                get<SecureLocalPreferences>().getString(AuthLocalKeys.AUTH_TOKEN).orEmpty()
+            },
         )
     }
     single { createAuthApiService(get()) }
@@ -48,7 +53,8 @@ val databaseModule = module {
 }
 
 val dataModule = module {
-    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+    single<LocalPreferences> { LocalPreferencesImpl(get()) }
+    single<SecureLocalPreferences> { SecureLocalPreferencesImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
     single<HomeRepository> { HomeRepositoryImpl(get(), get(), get()) }
 }
@@ -64,6 +70,7 @@ val domainModule = module {
 
 val coreModules: List<Module> = listOf(
     coreModule,
+    platformSecureStorageModule,
     networkModule,
     platformDatabaseModule,
     databaseModule,
