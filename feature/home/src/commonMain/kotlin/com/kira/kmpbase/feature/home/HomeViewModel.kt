@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.kira.kmpbase.core.domain.model.AppResult
 import com.kira.kmpbase.core.domain.usecase.home.ObserveContactsUseCase
 import com.kira.kmpbase.core.domain.usecase.home.RefreshContactsUseCase
+import com.kira.kmpbase.core.monitoring.Monitoring
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,5 +40,9 @@ class HomeViewModel(
                 AppResult.Loading -> Unit
             }
         }
+    }
+
+    fun testCrashlytics() {
+        Monitoring.sendTestCrash()
     }
 }

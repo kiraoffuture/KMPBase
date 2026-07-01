@@ -1,12 +1,14 @@
 package com.kira.kmpbase.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import com.kira.kmpbase.core.ui.components.ErrorView
 import com.kira.kmpbase.core.ui.generated.resources.Res
 import com.kira.kmpbase.core.ui.generated.resources.home_contacts_title
 import com.kira.kmpbase.core.ui.generated.resources.home_no_contacts
+import com.kira.kmpbase.core.ui.generated.resources.home_test_crashlytics
 import com.kira.kmpbase.core.ui.localization.toLocalizedMessage
 import com.kira.kmpbase.core.ui.viewmodel.koinViewModel
 import org.jetbrains.compose.resources.stringResource
@@ -33,21 +36,33 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage = uiState.error?.toLocalizedMessage()
 
-    when {
-        uiState.isLoading && uiState.contacts.isEmpty() -> ContactListSkeleton(modifier)
-        errorMessage != null && uiState.contacts.isEmpty() -> ErrorView(
-            message = errorMessage,
-            onRetry = viewModel::refresh,
-            modifier = modifier,
-        )
-        uiState.contacts.isEmpty() -> EmptyView(
-            message = stringResource(Res.string.home_no_contacts),
-            modifier = modifier,
-        )
-        else -> HomeContent(
-            uiState = uiState,
-            modifier = modifier,
-        )
+    Column(modifier = modifier.fillMaxSize()) {
+        Button(
+            onClick = viewModel::testCrashlytics,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            Text(stringResource(Res.string.home_test_crashlytics))
+        }
+        Box(modifier = Modifier.weight(1f)) {
+            when {
+                uiState.isLoading && uiState.contacts.isEmpty() -> ContactListSkeleton(Modifier.fillMaxSize())
+                errorMessage != null && uiState.contacts.isEmpty() -> ErrorView(
+                    message = errorMessage,
+                    onRetry = viewModel::refresh,
+                    modifier = Modifier.fillMaxSize(),
+                )
+                uiState.contacts.isEmpty() -> EmptyView(
+                    message = stringResource(Res.string.home_no_contacts),
+                    modifier = Modifier.fillMaxSize(),
+                )
+                else -> HomeContent(
+                    uiState = uiState,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
     }
 }
 

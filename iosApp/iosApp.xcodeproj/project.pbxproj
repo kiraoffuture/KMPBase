@@ -71,10 +71,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC52BAEFEBA2A96FFFAD55AD /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
+				F1R3B4S3BP000000000001 /* Copy Firebase Config */,
 				B821800ABECE784C452288C2 /* Compile Kotlin Framework */,
 				78CF3B12A29EB8EC07B08C68 /* Sources */,
 				3FE2E04986AA72AC60D884BC /* Frameworks */,
 				5C45628B5D759A8F0CE6A748 /* Resources */,
+				F1R3B4S3BP000000000002 /* Upload Crashlytics dSYM */,
 			);
 			buildRules = (
 			);
@@ -85,6 +87,8 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				F1R3B4S3PD000000000001 /* FirebaseCore */,
+				F1R3B4S3PD000000000002 /* FirebaseCrashlytics */,
 			);
 			productName = iosApp;
 			productReference = B624CA8E404819B0D753F7BA /* KMPBase.app */;
@@ -114,6 +118,9 @@
 			);
 			mainGroup = 89FAA46AB16426ECE2AAB787;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 075EA18C777438CF81D5CAAE /* Products */;
 			projectDirPath = "";
@@ -154,6 +161,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -z \"$JAVA_HOME\" ] && [ -d \"/Applications/Android Studio.app/Contents/jbr/Contents/Home\" ]; then\n  export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"\nfi\n\nFRAMEWORK_DIR=\"$SRCROOT/../composeApp/build/xcode-frameworks/$CONFIGURATION/$SDK_NAME/Shared.framework\"\nif [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ] && [ -d \"$FRAMEWORK_DIR\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\" and Shared.framework already exists\"\n  exit 0\nfi\n\nAPP_ENV=\"${APP_ENV:-develop}\"\n\ncd \"$SRCROOT/..\"\n./gradlew :composeApp:embedAndSignAppleFrameworkForXcode -PappEnv=\"$APP_ENV\"\n";
+		};
+		F1R3B4S3BP000000000001 /* Copy Firebase Config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Firebase Config";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/iosApp/GoogleService-Info.plist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ENV=\"${APP_ENV:-develop}\"\nSRC=\"${SRCROOT}/Firebase/${ENV}/GoogleService-Info.plist\"\nDEST=\"${SRCROOT}/iosApp/GoogleService-Info.plist\"\nif [ ! -f \"$SRC\" ]; then\n  echo \"warning: Missing Firebase plist at $SRC — run scripts/firebase-setup.sh\"\n  exit 0\nfi\ncp \"$SRC\" \"$DEST\"\n";
+		};
+		F1R3B4S3BP000000000002 /* Upload Crashlytics dSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Upload Crashlytics dSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/scripts/upload-crashlytics-dsyms.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -747,6 +797,30 @@
 			defaultConfigurationName = DevelopDebug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F1R3B4S3PD000000000001 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		F1R3B4S3PD000000000002 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A9A0F30FBD89453BEA789D76 /* Project object */;
 }

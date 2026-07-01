@@ -16,6 +16,7 @@ kotlin {
             implementation(projects.core.ui)
             implementation(projects.core.domain)
             implementation(projects.core.common)
+            implementation(projects.core.monitoring)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -8,6 +8,7 @@
 
     <string name="home_contacts_title">Contacts</string>
     <string name="home_no_contacts">No contacts found</string>
+    <string name="home_test_crashlytics">Test Crash (fatal)</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_logout">Logout</string>

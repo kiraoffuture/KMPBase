@@ -1,3 +1,4 @@
 #include "Develop.xcconfig"
 
 KOTLIN_FRAMEWORK_BUILD_TYPE=debug
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym

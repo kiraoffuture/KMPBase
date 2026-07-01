@@ -3,5 +3,5 @@
 TEAM_ID=
 
 PRODUCT_NAME=KMPBase Dev
-PRODUCT_BUNDLE_IDENTIFIER=com.kira.kmpbase.KMPBase$(TEAM_ID).develop
+PRODUCT_BUNDLE_IDENTIFIER=com.kira.kmpbase$(TEAM_ID).develop
 APP_ENV=develop

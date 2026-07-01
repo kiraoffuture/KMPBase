@@ -8,6 +8,7 @@
 
     <string name="home_contacts_title">Danh bạ</string>
     <string name="home_no_contacts">Không có liên hệ nào</string>
+    <string name="home_test_crashlytics">Test Crash (fatal)</string>
 
     <string name="settings_title">Cài đặt</string>
     <string name="settings_logout">Đăng xuất</string>
