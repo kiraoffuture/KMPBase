@@ -60,23 +60,37 @@ HomeScreen → HomeViewModel
 
 ## Run
 
+### Local setup
+
+Config files with secrets are **gitignored** and not in the repo. After clone, copy them from team [Google Drive (configs)](https://drive.google.com/drive/folders/1vvfdWyZrbkEuS35wXK88Y0UkGTmLW85f?usp=sharing):
+
+| Config | Local path |
+|--------|------------|
+| `.env.develop`, `.env.staging`, `.env.product` | repo root |
+| `google-services.json` | `androidApp/src/develop/`, `staging/`, `product/` |
+| `GoogleService-Info.plist` | `iosApp/Firebase/develop/`, `staging/`, `product/` |
+
+Gradle reads `.env.{appEnv}` first, then falls back to `.env` if missing.
+
+iOS copies the matching plist into `iosApp/iosApp/GoogleService-Info.plist` at build time based on `APP_ENV`.
+
+**Alternatives** (if you have API / Firebase project access):
+
+```bash
+# Env — set SERVER_URL in each file
+cp .env.example .env.develop
+cp .env.example .env.staging
+cp .env.example .env.product
+
+# Firebase — downloads configs for all flavors
+./scripts/firebase-setup.sh
+```
+
 ### Environments
 
 The app supports three environments: **develop**, **staging**, **product**.
 
-1. Create env files and set `SERVER_URL` (files are **gitignored** — not committed):
-
-```bash
-cp .env.example .env.develop
-cp .env.example .env.staging
-cp .env.example .env.product
-```
-
-Team-shared env templates: [Google Drive (envs)](https://drive.google.com/drive/folders/1snZx6jmEWapsf7mJjdJpj92Ai0CGC9Sf?usp=sharing).
-
-Gradle reads `.env.{appEnv}` first, then falls back to `.env` if missing.
-
-2. Select environment per platform (default: `develop`):
+Select environment per platform (default: `develop`):
 
 - **Android (Android Studio):** pick an **Android App** run config (`android DevelopDebug`, …) from the run dropdown
 - **Desktop:** `-PappEnv=develop|staging|product` (default: `develop`)
