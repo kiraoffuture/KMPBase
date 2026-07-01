@@ -10,6 +10,9 @@ local.properties
 .env.staging
 .env.product
 !.env.example
+# Firebase configs (download via scripts/firebase-setup.sh)
+**/google-services.json
+**/GoogleService-Info.plist
 .idea/*
 !.idea/runConfigurations/
 !.idea/runConfigurations/**
