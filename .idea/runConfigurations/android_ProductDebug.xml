@@ -2,7 +2,7 @@
   <configuration default="false" name="android ProductDebug" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
     <module name="KMPBase.androidApp" />
     <option name="ANDROID_RUN_CONFIGURATION_SCHEMA_VERSION" value="1" />
-    <option name="DEPLOY" value="true" />
+    <option name="DEPLOY" value="false" />
     <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
     <option name="DEPLOY_AS_INSTANT" value="false" />
     <option name="ARTIFACT_NAME" value="" />
@@ -62,7 +62,7 @@
     <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
     <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
     <method v="2">
-      <option name="Android.Gradle.BeforeRunTask" enabled="true" goal=":androidApp:installProductDebug" />
+      <option name="Android.Gradle.BeforeRunTask" enabled="true" goal=":androidApp:runProductDebug" />
     </method>
   </configuration>
 </component>

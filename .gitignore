@@ -10,6 +10,7 @@ local.properties
 .env.staging
 .env.product
 !.env.example
+iosApp/Configuration/Env.*.xcconfig
 # Firebase configs (download via scripts/firebase-setup.sh)
 **/google-services.json
 **/GoogleService-Info.plist

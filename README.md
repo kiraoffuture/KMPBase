@@ -118,11 +118,9 @@ Shared run configurations (type **Android App**) are in **`.idea/runConfiguratio
 - `android StagingDebug`, `android StagingRelease`
 - `android ProductDebug`, `android ProductRelease`
 
-Each config runs Gradle **before launch** (`install{Variant}` for debug, `run{Variant}` for release) then deploys via **Android App** (debug only).
+Each config runs Gradle **before launch** via `run{Variant}` (install + launch with the correct `applicationId`). Android Studio deploy is disabled (`DEPLOY=false`) so the IDE does not launch a different flavor based on the **Build Variants** panel selection.
 
-After clone: **File → Sync Project with Gradle Files**, then pick a config from the run dropdown (`Android App.android DevelopDebug`, …). If missing, **File → Invalidate Caches → Restart**.
-
-For debug configs, also set **Build Variants → androidApp** to the matching variant (e.g. `developDebug`) so deploy matches the installed APK.
+After clone: **File → Sync Project with Gradle Files**, then pick a config from the run dropdown (`android StagingDebug`, …). If missing, **File → Invalidate Caches → Restart**.
 
 Requires a connected device/emulator with `adb` available (via Android SDK).
 

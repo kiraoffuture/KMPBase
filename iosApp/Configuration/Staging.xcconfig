@@ -1,9 +1,7 @@
 #include "Config.xcconfig"
+#include "Env.staging.xcconfig"
 
 TEAM_ID=
 
 PRODUCT_NAME=KMPBase Stg
-APP_DISPLAY_NAME=[S]KMPBase
-INFOPLIST_KEY_CFBundleDisplayName=$(APP_DISPLAY_NAME)
-PRODUCT_BUNDLE_IDENTIFIER=com.kira.kmpbase$(TEAM_ID).staging
 APP_ENV=staging

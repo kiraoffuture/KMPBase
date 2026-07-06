@@ -25,5 +25,9 @@ gradlePlugin {
             id = "com.kira.kmpbase.kmp.feature"
             implementationClass = "KmpFeatureConventionPlugin"
         }
+        register("envConfig") {
+            id = "com.kira.kmpbase.env"
+            implementationClass = "EnvConfigPlugin"
+        }
     }
 }
