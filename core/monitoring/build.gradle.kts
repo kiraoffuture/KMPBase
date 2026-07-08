@@ -19,12 +19,15 @@ kotlin {
             implementation(libs.kermit.crashlytics)
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.crashlytics)
+            implementation(libs.gitlive.firebase.analytics)
             implementation(libs.firebase.crashlytics)
+            implementation(libs.firebase.analytics)
         }
         iosMain.dependencies {
             implementation(libs.kermit.crashlytics)
             implementation(libs.gitlive.firebase.app)
             implementation(libs.gitlive.firebase.crashlytics)
+            implementation(libs.gitlive.firebase.analytics)
         }
     }
 }

@@ -89,6 +89,7 @@
 			packageProductDependencies = (
 				F1R3B4S3PD000000000001 /* FirebaseCore */,
 				F1R3B4S3PD000000000002 /* FirebaseCrashlytics */,
+				F1R3B4S3PD000000000003 /* FirebaseAnalytics */,
 			);
 			productName = iosApp;
 			productReference = B624CA8E404819B0D753F7BA /* KMPBase.app */;
@@ -819,6 +820,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		F1R3B4S3PD000000000003 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1R3B4S3PK000000000001 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
